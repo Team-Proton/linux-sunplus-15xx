@@ -1,0 +1,7 @@
+#
+# Sunplus SPHE15XX
+#
+platform-$(CONFIG_SPHE15XX)	+= sphe15xx/
+cflags-$(CONFIG_SPHE15XX)	+= -I$(srctree)/arch/mips/include/asm/mach-sphe15xx
+load-$(CONFIG_SPHE1506)		+= 0xffffffff80010000
+load-$(CONFIG_SPHE1512)		+= 0xffffffff80010000

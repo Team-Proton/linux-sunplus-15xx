@@ -1,0 +1,18 @@
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	compatible = "sunplus,sphe1502", "sunplus,sphe1506", "sunplus,sphe1512", "sunplus,sphe15xx";
+
+	cpus {
+		cpu@0 {
+			compatible = "mips,mips24KEc";
+		};
+	};
+
+	cpuintc: cpuintc@0 {
+		#address-cells = <0>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+		compatible = "sunplus,sphe15xx-cpu-intc";
+	};
+};

@@ -1,0 +1,17 @@
+/dts-v1/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+#include "sphe15xx.dtsi"
+
+/ {
+	compatible = "sunplus,sphe15xx", "sunplus,sphe1502", "sunplus,sphe1506", "sunplus,sphe1512";
+	model = "TP-Link TL-WR1043ND Version 1";
+
+	memory@0 {
+		device_type = "memory";
+		reg = <0x0 0x10000000>;
+	};
+
+};

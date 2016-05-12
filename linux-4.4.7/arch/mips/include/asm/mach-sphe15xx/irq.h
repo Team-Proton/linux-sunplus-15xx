@@ -1,0 +1,741 @@
+/*
+ * Copyright (C) 2016 Team-Proton <dev.team.proton@gmail.com>
+ *
+ * This file is subject to the terms and conditions of the GNU General Public
+ * License.  See the file "COPYING" in the main directory of this archive
+ * for more details.
+ */
+#ifndef __ASM_SPHE15XX_IRQ_H
+#define __ASM_SPHE15XX_IRQ_H
+
+#define NR_IRQS 	(8 + CYGNUM_HAL_IRQ_COUNT)
+
+#ifndef IC_VER
+#define IC_1000A	0
+#define IC_1000D	1
+#define IC_1002		2
+#define IC_1003		3
+#define IC_9000		20
+#define IC_9100		21
+#define IC_8203D	100
+#define IC_1500		200
+#define IC_8600		300
+#define QAE377		300
+#define QCE491		400
+#define QCE483		500
+#define QAF536      600
+#define QAF561		700
+
+#define IC_VER 		QCE491
+#endif
+
+#ifndef CYGHWR_HAL_INTERRUPT_VECTORS_DEFINED
+
+// These are decoded via the IP bits of the cause
+// register when an external interrupt is delivered.
+//
+
+// CPU level interrupts
+#define CYGNUM_HAL_INTERRUPT_IP0	0x00
+#define CYGNUM_HAL_INTERRUPT_IP1	0x01
+#define CYGNUM_HAL_INTERRUPT_IP2	0x02
+#define CYGNUM_HAL_INTERRUPT_IP3	0x03
+#define CYGNUM_HAL_INTERRUPT_IP4	0x04
+#define CYGNUM_HAL_INTERRUPT_IP5	0x05
+#define CYGNUM_HAL_INTERRUPT_IP6	0x06
+#define CYGNUM_HAL_INTERRUPT_IP7	0x07
+
+#define CYGNUM_HAL_INTERRUPT_VECTOR_BASE		0x20
+#define CYGNUM_HAL_INTERRUPT_LEVEL0_BASE		CYGNUM_HAL_INTERRUPT_VECTOR_BASE
+#define CYGNUM_HAL_INTERRUPT_LEVEL1_BASE		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 32)
+
+#if (IC_VER == QCE491)||(IC_VER == QAF536)
+#define CYGNUM_HAL_INTERRUPT_RISC_TIMER			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 0)	// E
+												// performance counter register
+#define CYGNUM_HAL_INTERRUPT_RISC_PERFCNT		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 4)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER3				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_WATCHDOG_TIMER		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 6)	// E
+#define CYGNUM_HAL_INTERRUPT_IPC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 7)	// L
+#define CYGNUM_HAL_INTERRUPT_IOP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 8)	// L
+#define CYGNUM_HAL_INTERRUPT_DSP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 9)	// L
+#define CYGNUM_HAL_INTERRUPT_UART0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 10)	// L
+#define CYGNUM_HAL_INTERRUPT_UART1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 11)	// L
+#define CYGNUM_HAL_INTERRUPT_UART2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 12)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_13		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 14)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 15)	// L
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 16)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 17)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_18		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 18)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_19		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_20		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_DEMUX				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 21)	// L
+#define CYGNUM_HAL_INTERRUPT_DEMUX2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 22)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_23		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_24		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_CARD				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_NAND				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_27		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_PCMCIA				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_MAC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_MSI_INT0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_31		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_VLD_MP				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_DEC_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_SLICE_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_MC2SD				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_4		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 4)
+#define CYGNUM_HAL_INTERRUPT_MJPEG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_PNG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 6)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_7		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 7)
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_START		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 8)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_END		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 9)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER1			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 10)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER2			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 11)	// E
+#define CYGNUM_HAL_INTERRUPT_AFRC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 12)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_13		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_14		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 14)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_15		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 15)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_16		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 16)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_17		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 17)
+#define CYGNUM_HAL_INTERRUPT_HDMI_TX			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 18)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_19		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_20		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_21		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 21)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_22		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 22)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_23		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_24		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_MBUS				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_CBDMA				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_27		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_L2C0				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_29		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 29)
+#define CYGNUM_HAL_INTERRUPT_SDRAM0_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_CBSW				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB			CYGNUM_HAL_INTERRUPT_OHCI_USB0
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB			CYGNUM_HAL_INTERRUPT_EHCI_USB0
+
+#elif (IC_VER == QAF561)
+#define CYGNUM_HAL_INTERRUPT_RISC_TIMER			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_RISC_PERFCNT		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 4)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER3				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_WATCHDOG_TIMER		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 6)	// E
+#define CYGNUM_HAL_INTERRUPT_IPC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 7)	// L
+#define CYGNUM_HAL_INTERRUPT_IOP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 8)	// L
+#define CYGNUM_HAL_INTERRUPT_DSP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 9)	// L
+#define CYGNUM_HAL_INTERRUPT_UART0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 10)	// L
+#define CYGNUM_HAL_INTERRUPT_UART1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 11)	// L
+#define CYGNUM_HAL_INTERRUPT_UART2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 12)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_13		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 14)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 15)	// L
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 16)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 17)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_18		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 18)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_19		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_20		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_DEMUX				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 21)	// L
+#define CYGNUM_HAL_INTERRUPT_DEMUX2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 22)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_23		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_24		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_CARD				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_NAND				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_27		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_PCMCIA				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_MAC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_MSI_INT0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_31		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_VLD_MP				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_DEC_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_SLICE_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_MC2SD				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_4		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 4)
+#define CYGNUM_HAL_INTERRUPT_MJPEG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_PNG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 6)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_7		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 7)
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_START		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 8)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_END		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 9)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER1			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 10)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER2			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 11)	// E
+#define CYGNUM_HAL_INTERRUPT_AFRC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 12)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_13		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_14		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 14)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_15		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 15)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_16		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 16)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_17		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 17)
+#define CYGNUM_HAL_INTERRUPT_HDMI_TX			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 18)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_19		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_20		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_21		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 21)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_22		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 22)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_23		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_24		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_MBUS				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_CBDMA				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_27		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_L2C0				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_29		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 29)
+#define CYGNUM_HAL_INTERRUPT_SDRAM0_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_CBSW				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB			CYGNUM_HAL_INTERRUPT_OHCI_USB0
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB			CYGNUM_HAL_INTERRUPT_EHCI_USB0
+
+#elif (IC_VER == QCE483)
+#define CYGNUM_HAL_INTERRUPT_RISC_TIMER			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_RISC_PERFCNT		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 4)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER3				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_WATCHDOG_TIMER		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 6)	// E
+#define CYGNUM_HAL_INTERRUPT_IPC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 7)	// L
+#define CYGNUM_HAL_INTERRUPT_IOP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 8)	// L
+#define CYGNUM_HAL_INTERRUPT_DSP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 9)	// L
+#define CYGNUM_HAL_INTERRUPT_UART0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 10)	// L
+#define CYGNUM_HAL_INTERRUPT_UART1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 11)	// L
+#define CYGNUM_HAL_INTERRUPT_UART2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 12)	// L
+#define CYGNUM_HAL_INTERRUPT_SERVO				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 13)	// L
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 14)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 15)	// L
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 16)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 17)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_18		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 18)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_19		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_20		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_DEMUX				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 21)	// L
+#define CYGNUM_HAL_INTERRUPT_DEMUX2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 22)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_23		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_24		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_CARD				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_NAND				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_27		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_PCMCIA				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_MAC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_MSI_INT0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_31		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_VLD_MP				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_DEC_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_SLICE_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_MC2SD				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_4		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 4)
+#define CYGNUM_HAL_INTERRUPT_MJPEG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_PNG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 6)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_7		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 7)
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_START		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 8)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_END		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 9)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER1			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 10)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER2			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 11)	// E
+#define CYGNUM_HAL_INTERRUPT_AFRC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 12)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_13		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_14		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 14)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_15		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 15)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_16		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 16)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_17		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 17)
+#define CYGNUM_HAL_INTERRUPT_HDMI_TX			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 18)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_19		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 19)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_20		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 20)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_21		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 21)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_22		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 22)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_23		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_24		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_MBUS				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_CBDMA				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_L2C1				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 27)	// L
+#define CYGNUM_HAL_INTERRUPT_L2C0				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_SDRAM1_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_SDRAM0_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_CBSW				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB			CYGNUM_HAL_INTERRUPT_OHCI_USB0
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB			CYGNUM_HAL_INTERRUPT_EHCI_USB0
+#else
+#define CYGNUM_HAL_INTERRUPT_RISC_TIMER			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_RISC_PERFCNT		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 4)	// E
+#define CYGNUM_HAL_INTERRUPT_TIMER3				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_WATCHDOG_TIMER		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 6)	// E
+#define CYGNUM_HAL_INTERRUPT_IPC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 7)	// L
+#define CYGNUM_HAL_INTERRUPT_IOP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 8)	// L
+#define CYGNUM_HAL_INTERRUPT_DSP				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 9)	// L
+#define CYGNUM_HAL_INTERRUPT_UART0				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 10)	// L
+#define CYGNUM_HAL_INTERRUPT_UART1				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 11)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_12		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 12)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L0_13		(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 13)
+#define CYGNUM_HAL_INTERRUPT_OHCI_USB			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 14)	// L
+#define CYGNUM_HAL_INTERRUPT_EHCI_USB			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 15)	// L
+#define CYGNUM_HAL_INTERRUPT_MINI_USB			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 16)	// L
+#define CYGNUM_HAL_INTERRUPT_MAC				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 17)	// L
+#define CYGNUM_HAL_INTERRUPT_SERVO				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 18)	// L
+#define CYGNUM_HAL_INTERRUPT_ATA_DEVICE			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 19)	// L
+#define CYGNUM_HAL_INTERRUPT_ATA_DMA			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 20)	// L
+#define CYGNUM_HAL_INTERRUPT_DEMUX				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 21)	// L
+#define CYGNUM_HAL_INTERRUPT_DEMUX2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 22)	// L
+#define CYGNUM_HAL_INTERRUPT_CPS				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 23)	// L
+#define CYGNUM_HAL_INTERRUPT_CPS2				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 24)	// L
+#define CYGNUM_HAL_INTERRUPT_CARD				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 25)	// L
+#define CYGNUM_HAL_INTERRUPT_NAND				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 26)	// L
+#define CYGNUM_HAL_INTERRUPT_SDIO				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 27)	// L
+#define CYGNUM_HAL_INTERRUPT_PCMCIA				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_CAS				(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_MSI_INT0			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_MSI_INT1			(CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 31)	// L
+
+#define CYGNUM_HAL_INTERRUPT_VLD_MP				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 0)	// E
+#define CYGNUM_HAL_INTERRUPT_DEC_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 1)	// E
+#define CYGNUM_HAL_INTERRUPT_SLICE_END			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 2)	// E
+#define CYGNUM_HAL_INTERRUPT_MC2SD				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 3)	// E
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_4		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 4)
+#define CYGNUM_HAL_INTERRUPT_MJPEG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 5)	// E
+#define CYGNUM_HAL_INTERRUPT_PNG				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 6)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_7		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 7)
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_START		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 8)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_FLD_END		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 9)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER1			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 10)	// E
+#define CYGNUM_HAL_INTERRUPT_TGEN_USER2			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 11)	// E
+#define CYGNUM_HAL_INTERRUPT_AFRC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 12)	// E
+#define CYGNUM_HAL_INTERRUPT_V656IN				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 13)	// L
+#define CYGNUM_HAL_INTERRUPT_TPI				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 14)	// L
+#define CYGNUM_HAL_INTERRUPT_TVDEC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 15)	// L
+#define CYGNUM_HAL_INTERRUPT_VBI_DMA			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 16)	// L
+#define CYGNUM_HAL_INTERRUPT_VBI				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 17)	// L
+#define CYGNUM_HAL_INTERRUPT_HDMI_TX			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 18)	// L
+#define CYGNUM_HAL_INTERRUPT_HDMI_RX			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 19)	// L
+#define CYGNUM_HAL_INTERRUPT_CEC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 20)	// L
+#define CYGNUM_HAL_INTERRUPT_SARADC				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 21)	// L
+#define CYGNUM_HAL_INTERRUPT_NXPSSD				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 22)	// L
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_23		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 23)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_24		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 24)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_25		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 25)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_26		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 26)
+#define CYGNUM_HAL_INTERRUPT_Reserved_L1_27		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 27)
+#define CYGNUM_HAL_INTERRUPT_SERVO_DEVICE		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 28)	// L
+#define CYGNUM_HAL_INTERRUPT_SDRAM1_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 29)	// L
+#define CYGNUM_HAL_INTERRUPT_SDRAM0_ERR			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 30)	// L
+#define CYGNUM_HAL_INTERRUPT_CBSW				(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 31)	// L
+#endif
+
+#define CYGNUM_HAL_INTERRUPT_NUMBER(N)				\
+	((N) >= CYGNUM_HAL_INTERRUPT_LEVEL1_BASE		\
+	 ? ((N) - CYGNUM_HAL_INTERRUPT_LEVEL1_BASE)		\
+	 : ((N) - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE))
+
+#define	CYGNUM_HAL_INTERRUPT_RTC	CYGNUM_HAL_INTERRUPT_RISC_TIMER
+
+#define	SPHE15XX_TIMER_IRQ			CYGNUM_HAL_INTERRUPT_RISC_TIMER
+#define	SPHE15XX_PERF_IRQ			CYGNUM_HAL_INTERRUPT_RISC_PERFCNT
+
+// Min/Max ISR numbers
+#define CYGNUM_HAL_ISR_MIN		0
+#define CYGNUM_HAL_ISR_MAX		(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 31)
+
+#endif // CYGIMP_HAL_COMMON_INTERRUPTS_CHAIN
+
+#define CYGNUM_HAL_ISR_COUNT	(CYGNUM_HAL_ISR_MAX - CYGNUM_HAL_ISR_MIN + 1)
+#define CYGNUM_HAL_IRQ_COUNT	(CYGNUM_HAL_ISR_MAX - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE + 1)
+#define IRQ_L0_COUNT			(CYGNUM_HAL_INTERRUPT_LEVEL1_BASE - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE)
+#define IRQ_L1_COUNT			(CYGNUM_HAL_ISR_MAX - CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 1)
+
+// The vector used by the Real time clock
+#define CYGHWR_HAL_INTERRUPT_VECTORS_DEFINED
+
+//--------------------------------------------------------------------------
+//#ifndef __ASSEMBLER__
+
+#include <asm/mach-sphe15xx/sphe15xx.h>
+
+static inline void modify_cp0_intmask(unsigned clr_mask, unsigned set_mask)
+{
+	unsigned long status = read_c0_status();
+	status &= ~((clr_mask & 0xFF) << 8);
+	status |= (set_mask & 0xFF) << 8;
+	write_c0_status(status);
+}
+
+//--------------------------------------------------------------------------
+// Interrupt controller access.
+
+#ifndef CYGHWR_HAL_INTERRUPT_CONTROLLER_ACCESS_DEFINED
+
+// Array which stores the configured priority levels for the configured
+// interrupts.
+externC CYG_WORD32 hal_level0_mask[];
+externC CYG_WORD32 hal_level1_mask[];
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_CPULEVEL_UNMASK(vector)							\
+	CYG_MACRO_START														\
+	asm volatile (														\
+		"mfc0	$3, $12;"												\
+		"la		$2, 0x00000100;"										\
+		"sllv	$2, $2, %0;"											\
+		"or		$3, $3, $2;"											\
+		"mtc0	$3, $12;"												\
+		"ehb;"															\
+		:																\
+		: "r"(vector)													\
+		: "$2", "$3"													\
+	);																	\
+	CYG_MACRO_END
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_LEVEL0_UNMASK(vector)								\
+	CYG_MACRO_START														\
+	cyg_uint32 mask;													\
+	cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE;		\
+	cyg_uint32 mask_addr = hal_level0_mask[shift];						\
+	cyg_uint32 ipnum = ((mask_addr - HAL_INTR0_MASK) >> 2) + 2;			\
+	HAL_INTERRUPT_CPULEVEL_UNMASK(ipnum);	\
+	HAL_READ_UINT32(mask_addr, mask);									\
+	mask |= (1 << shift);												\
+	HAL_WRITE_UINT32(mask_addr, mask);									\
+	CYG_MACRO_END
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_LEVEL1_UNMASK(vector)								\
+	CYG_MACRO_START														\
+	cyg_uint32 mask;													\
+	cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL1_BASE;		\
+	cyg_uint32 mask_addr = hal_level1_mask[shift];						\
+	cyg_uint32 ipnum = ((mask_addr - HAL_INTR0_MASK)>>2) + 2;			\
+	HAL_INTERRUPT_CPULEVEL_UNMASK(ipnum);								\
+	HAL_READ_UINT32(mask_addr, mask);									\
+	mask |= (1 << shift);												\
+	HAL_WRITE_UINT32(mask_addr, mask);									\
+	CYG_MACRO_END
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_CPULEVEL_MASK(vector)								\
+	CYG_MACRO_START														\
+	asm volatile (														\
+		"mfc0	$3, $12;"												\
+		"la		$2, 0x00000100;"										\
+		"sllv	$2, $2, %0;"											\
+		"nor	$2, $2, $0;"											\
+		"and	$3, $3, $2;"											\
+		"mtc0	$3, $12;"												\
+		"ehb;"															\
+		:																\
+		: "r"(vector)													\
+		: "$2", "$3"													\
+		);																\
+	CYG_MACRO_END
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_LEVEL0_MASK(vector)								\
+	CYG_MACRO_START														\
+	cyg_uint32 mask;													\
+	cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE;		\
+	cyg_uint32 mask_addr = hal_level0_mask[shift];						\
+	HAL_READ_UINT32(mask_addr, mask);									\
+	mask &= ~(1 << shift);												\
+	HAL_WRITE_UINT32(mask_addr, mask);									\
+	CYG_MACRO_END
+
+/* Internal macro. Don't use it in other place.*/
+#define HAL_INTERRUPT_LEVEL1_MASK(vector)								\
+	CYG_MACRO_START														\
+	cyg_uint32 mask;													\
+	cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL1_BASE;		\
+	cyg_uint32 mask_addr = hal_level1_mask[shift];						\
+	HAL_READ_UINT32(mask_addr, mask);									\
+	mask &= ~(1 << shift);												\
+	HAL_WRITE_UINT32(mask_addr, mask);									\
+	CYG_MACRO_END
+
+#define HAL_INTERRUPT_MASK(vector)										\
+	CYG_MACRO_START														\
+	if ((vector) <= CYGNUM_HAL_INTERRUPT_IP7) {							\
+		HAL_INTERRUPT_CPULEVEL_MASK(vector);							\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE) {			\
+		HAL_INTERRUPT_LEVEL0_MASK(vector);								\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 32) {		\
+		HAL_INTERRUPT_LEVEL1_MASK(vector);								\
+	}																	\
+	CYG_MACRO_END
+
+#define HAL_INTERRUPT_UNMASK(vector)									\
+	CYG_MACRO_START														\
+	if ((vector) <= CYGNUM_HAL_INTERRUPT_IP7) {							\
+		HAL_INTERRUPT_CPULEVEL_UNMASK(vector);							\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE) {			\
+		HAL_INTERRUPT_LEVEL0_UNMASK(vector);							\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 32) {		\
+		HAL_INTERRUPT_LEVEL1_UNMASK(vector);							\
+	}																	\
+	CYG_MACRO_END
+
+#define HAL_INTERRUPT_ACKNOWLEDGE(vector)								\
+	CYG_MACRO_START														\
+	if ((vector) <= CYGNUM_HAL_INTERRUPT_IP7) {							\
+		/* vector = vector; */											\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE) {			\
+		cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL0_BASE; \
+		HAL_WRITE_UINT32(HAL_LEVEL0_FLAG, 1 << shift);					\
+	} else if ((vector) < CYGNUM_HAL_INTERRUPT_LEVEL1_BASE + 32) {		\
+		cyg_uint32 shift = (vector) - CYGNUM_HAL_INTERRUPT_LEVEL1_BASE; \
+		HAL_WRITE_UINT32(HAL_LEVEL1_FLAG, 1 << shift);					\
+	}																	\
+	CYG_MACRO_END
+
+/*
+ * Currently, we do not allow application change any interrupt attributes
+ */
+#define HAL_INTERRUPT_CONFIGURE(vector, level, up)						\
+	CYG_MACRO_START														\
+	if ((vector) >= CYGNUM_HAL_INTERRUPT_LEVEL1_BASE) {					\
+	} else if ((vector) >= CYGNUM_HAL_INTERRUPT_LEVEL0_BASE) {			\
+	}																	\
+	CYG_MACRO_END
+
+#define HAL_INTERRUPT_SET_LEVEL(vector, level)
+
+#define CYGHWR_HAL_INTERRUPT_CONTROLLER_ACCESS_DEFINED
+
+#endif
+
+//--------------------------------------------------------------------------
+// Interrupt control macros
+// Beware of nops in this code. They fill delay slots and avoid CP0 hazards
+// that might otherwise cause following code to run in the wrong state or
+// cause a resource conflict.
+#ifndef CYGHWR_HAL_INTERRUPT_ENABLE_DISABLE_RESTORE_DEFINED
+
+#define HAL_DISABLE_INTERRUPTS(old)		\
+	CYG_MACRO_START						\
+	asm volatile (						\
+		"di		%0;"					\
+		"and	%0, %0, 0x1;"			\
+		: "=r"(old)						\
+		);								\
+	CYG_MACRO_END
+
+#define HAL_ENABLE_INTERRUPTS()			\
+	CYG_MACRO_START						\
+	asm volatile (						\
+		"ei;"							\
+		);								\
+	CYG_MACRO_END
+
+#define HAL_RESTORE_INTERRUPTS(old)		\
+	CYG_MACRO_START						\
+	if (old)							\
+		asm volatile ("ei");			\
+	else								\
+		asm volatile ("di");			\
+	CYG_MACRO_END
+
+#define HAL_QUERY_INTERRUPTS(state)		\
+	CYG_MACRO_START						\
+	asm volatile (						\
+		"mfc0	%0, $12;"				\
+		"and	%0, %0, 0x1;"			\
+		: "=r"(state)					\
+		);								\
+	CYG_MACRO_END
+
+#define CYGHWR_HAL_INTERRUPT_ENABLE_DISABLE_RESTORE_DEFINED
+
+#endif
+
+//----------------------------------------------------------------------------
+// Clock
+
+#ifndef CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+externC CYG_WORD32 cyg_hal_clock_period;
+#define CYGHWR_HAL_CLOCK_PERIOD_DEFINED
+
+#define CYGNUM_HAL_RTC_CONSTANTS 		1
+#define CYGNUM_HAL_RTC_NUMERATOR 		1000000000
+#define CYGNUM_HAL_RTC_DENOMINATOR 		1000
+#define CYGNUM_HAL_RTC_PERIOD 			8000
+
+#define HAL_CLOCK_INITIALIZE(period)	\
+	CYG_MACRO_START						\
+	asm volatile (						\
+		".set push;"                    \
+		".set noreorder;"               \
+		"mtc0   $0, $9;"				\
+		"mtc0   %0, $11;"				\
+		"ehb;"                          \
+		".set pop;"                     \
+		:								\
+		: "r"(period)					\
+		);								\
+	cyg_hal_clock_period = (period);	\
+	CYG_MACRO_END
+
+#define HAL_CLOCK_RESET(vector, period)					\
+	CYG_MACRO_START										\
+	register CYG_WORD32 cmp_old;						\
+	register CYG_WORD32 cmp_new;						\
+	register CYG_WORD32 cnt;							\
+	asm volatile (										\
+		".set push;"									\
+		".set noreorder;"								\
+		"mfc0   %2, $9;"								\
+		"mfc0   %0, $11;"								\
+		"addu   %1, %0, %3;"							\
+		"mtc0   %1, $11;"								\
+		".set pop;"										\
+		: "=r"(cmp_old),								\
+			"=r"(cmp_new),								\
+			"=r"(cnt)									\
+		: "r"(cyg_hal_clock_period)						\
+		);												\
+	if (cmp_new > cmp_old) {							\
+		if ((cnt <= cmp_old) || (cnt >= cmp_new)) {		\
+			HAL_CLOCK_INITIALIZE(cyg_hal_clock_period);	\
+		}												\
+	} else {											\
+		if ((cnt <= cmp_old) && (cmp_new <= cnt)) {		\
+			HAL_CLOCK_INITIALIZE(cyg_hal_clock_period);	\
+		}												\
+	}													\
+	CYG_MACRO_END
+
+#define HAL_CLOCK_READ(pvalue)							\
+	CYG_MACRO_START										\
+	register CYG_WORD32 cmp;							\
+	register CYG_WORD32 cnt;							\
+	asm volatile (										\
+		".set push;"									\
+		".set noreorder;"								\
+		"mfc0   %0, $9;"								\
+		"mfc0   %1, $11;"								\
+		".set pop;"										\
+		: "=r"(cnt), "=r"(cmp)							\
+		);												\
+	if ((cmp - cnt) <= cyg_hal_clock_period) {			\
+		*(pvalue) = cyg_hal_clock_period - (cmp - cnt);	\
+	} else {											\
+		*(pvalue) = (cnt - cmp);						\
+		while (*(pvalue) > cyg_hal_clock_period) {		\
+			*(pvalue) -= cyg_hal_clock_period;			\
+		}												\
+	}													\
+	CYG_MACRO_END
+
+#define CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+#endif // CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+//----------------------------------------------------------------------------
+// Reset.
+#ifndef CYGHWR_HAL_RESET_DEFINED
+#define CYGHWR_HAL_RESET_DEFINED
+
+#define HAL_PLATFORM_RESET_ENTRY 0xBFC00000
+
+#endif // CYGHWR_HAL_RESET_DEFINED
+
+//----------------------------------------------------------------------------
+// Clock
+
+#ifndef CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+#define CYGHWR_HAL_CLOCK_PERIOD_DEFINED
+
+#define HAL_CLOCK_INITIALIZE(period)	\
+	CYG_MACRO_START						\
+	asm volatile (						\
+		".set push;"                    \
+		".set noreorder;"               \
+		"mtc0   $0, $9;"				\
+		"mtc0   %0, $11;"				\
+		"ehb;"                          \
+		".set pop;"                     \
+		:								\
+		: "r"(period)					\
+		);								\
+	cyg_hal_clock_period = (period);	\
+	CYG_MACRO_END
+
+#define HAL_CLOCK_RESET(vector, period)					\
+	CYG_MACRO_START										\
+	register CYG_WORD32 cmp_old;						\
+	register CYG_WORD32 cmp_new;						\
+	register CYG_WORD32 cnt;							\
+	asm volatile (										\
+		".set push;"									\
+		".set noreorder;"								\
+		"mfc0   %2, $9;"								\
+		"mfc0   %0, $11;"								\
+		"addu   %1, %0, %3;"							\
+		"mtc0   %1, $11;"								\
+		".set pop;"										\
+		: "=r"(cmp_old),								\
+			"=r"(cmp_new),								\
+			"=r"(cnt)									\
+		: "r"(cyg_hal_clock_period)						\
+		);												\
+	if (cmp_new > cmp_old) {							\
+		if ((cnt <= cmp_old) || (cnt >= cmp_new)) {		\
+			HAL_CLOCK_INITIALIZE(cyg_hal_clock_period);	\
+		}												\
+	} else {											\
+		if ((cnt <= cmp_old) && (cmp_new <= cnt)) {		\
+			HAL_CLOCK_INITIALIZE(cyg_hal_clock_period);	\
+		}												\
+	}													\
+	CYG_MACRO_END
+
+#define HAL_CLOCK_READ(pvalue)							\
+	CYG_MACRO_START										\
+	register CYG_WORD32 cmp;							\
+	register CYG_WORD32 cnt;							\
+	asm volatile (										\
+		".set push;"									\
+		".set noreorder;"								\
+		"mfc0   %0, $9;"								\
+		"mfc0   %1, $11;"								\
+		".set pop;"										\
+		: "=r"(cnt), "=r"(cmp)							\
+		);												\
+	if ((cmp - cnt) <= cyg_hal_clock_period) {			\
+		*(pvalue) = cyg_hal_clock_period - (cmp - cnt);	\
+	} else {											\
+		*(pvalue) = (cnt - cmp);						\
+		while (*(pvalue) > cyg_hal_clock_period) {		\
+			*(pvalue) -= cyg_hal_clock_period;			\
+		}												\
+	}													\
+	CYG_MACRO_END
+
+#define CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+#endif // CYGHWR_HAL_CLOCK_CONTROL_DEFINED
+
+//----------------------------------------------------------------------------
+// Barrier
+
+#ifndef CYGHWR_HAL_INTERRUPT_BARRIER_DEFINED
+#define HAL_INTERRUPT_BARRIER(vec)				\
+	do {										\
+		register UINT32 t0;						\
+		asm volatile ("lui		%0, 0xBFFE;"	\
+					  "lw		%0, 0(%0);"		\
+					  "sync"					\
+					  :"=r"(t0));				\
+	} while (0)
+#define CYGHWR_HAL_INTERRUPT_BARRIER_DEFINED
+#endif
+
+//#endif // __ASSEMBLER__
+
+#include_next <irq.h>
+
+#endif /* __ASM_AR7_IRQ_H */

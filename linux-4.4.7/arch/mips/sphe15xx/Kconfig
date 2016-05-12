@@ -1,0 +1,26 @@
+if SPHE15XX
+
+config SPHE1512
+	bool
+
+config SPHE1506
+	bool
+
+choice
+	prompt "Sunplus SoC family selection"
+	default SUNPLUS_SPHE1512
+	depends on SPHE15XX
+	help
+	  Select SPHE15XX MIPS SoC implementation.
+
+	config SUNPLUS_SPHE1512
+		bool "Sunplus SPHE1512 dvbs2 hd soc ddr1"
+		select SPHE1512
+
+	config SUNPLUS_SPHE1506
+		bool "Sunplus SPHE1506 dvbs2 hd soc ddr2"
+		select SPHE1506
+
+endchoice
+
+endif

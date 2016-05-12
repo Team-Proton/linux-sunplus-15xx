@@ -1,0 +1,36 @@
+#
+# Sunplus device configuration
+#
+
+config NET_VENDOR_SUNPLUS
+	bool "Sunplus devices"
+	default y
+
+	depends on SPHE15XX
+	---help---
+	  If you have a network (Ethernet) card belonging to this
+	  class, say Y here.
+
+	  Note that the answer to this question doesn't directly
+	  affect the kernel: saying N will just cause the configurator
+	  to skip all the questions about sunplus cards. If you say Y,
+	  you will be asked for your specific card in the following
+	  questions.
+
+if NET_VENDOR_SUNPLUS
+
+config SPHE15XX_EMAC
+        tristate "Sunplus SPHE15XX EMAC support"
+	depends on SPHE15XX
+	depends on OF
+	select CRC32
+	select MII
+	select PHYLIB
+	select MDIO_SPHE15XX
+        ---help---
+          Support for Sunplus SPHE15XX EMAC ethernet driver.
+
+          To compile this driver as a module, choose M here.  The module
+          will be called sphe15xx-emac.
+
+endif # NET_VENDOR_SUNPLUS

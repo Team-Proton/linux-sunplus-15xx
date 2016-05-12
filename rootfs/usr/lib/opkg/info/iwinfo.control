@@ -1,0 +1,10 @@
+Package: iwinfo
+Version: 2016-01-25-e4aca3910dff532ed878d0ceaf1ab6e8ad7719bf
+Depends: libc, libiwinfo
+Source: package/network/utils/iwinfo
+License: GPL-2.0
+Section: utils
+Maintainer: Jo-Philipp Wich <jow@openwrt.org>
+Architecture: ramips_24kec
+Installed-Size: 5767
+Description:  Command line frontend for the wireless information library.

@@ -1,0 +1,10 @@
+Package: hostapd-common
+Version: 2016-01-15-2
+Depends: libc
+Source: package/network/services/hostapd
+License: BSD-3-Clause
+Section: net
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ramips_24kec
+Installed-Size: 5325
+Description:  hostapd/wpa_supplicant common support files

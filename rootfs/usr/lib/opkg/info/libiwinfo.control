@@ -1,0 +1,11 @@
+Package: libiwinfo
+Version: 2016-01-25-e4aca3910dff532ed878d0ceaf1ab6e8ad7719bf
+Depends: libc, libnl-tiny, libuci
+Source: package/network/utils/iwinfo
+License: GPL-2.0
+Section: libs
+Maintainer: Jo-Philipp Wich <jow@openwrt.org>
+Architecture: ramips_24kec
+Installed-Size: 21370
+Description:  Wireless information library with consistent interface for proprietary Broadcom,
+ madwifi, nl80211 and wext driver interfaces.

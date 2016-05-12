@@ -1,0 +1,10 @@
+Package: kmod-i2c-ralink
+Version: 4.4.7-1
+Depends: kernel (=4.4.7-1-ca833cdf0914f363148cef52fd4264cc), kmod-i2c-core
+Source: package/kernel/linux
+License: GPLv2
+Section: kernel
+Status: unknown hold not-installed
+Architecture: ramips_24kec
+Installed-Size: 2411
+Description:  Kernel modules for enable ralink i2c controller.

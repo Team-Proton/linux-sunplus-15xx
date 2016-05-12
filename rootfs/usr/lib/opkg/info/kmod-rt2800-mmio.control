@@ -1,0 +1,9 @@
+Package: kmod-rt2800-mmio
+Version: 4.4.7+2016-01-10-1
+Depends: kernel (=4.4.7-1-ca833cdf0914f363148cef52fd4264cc), kmod-rt2800-lib, kmod-rt2x00-mmio
+Source: package/kernel/mac80211
+Section: kernel
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ramips_24kec
+Installed-Size: 4177
+Description:  Ralink Drivers for RT2x00 cards (RT28xx/RT3xxx MMIO)

@@ -1,0 +1,2 @@
+/etc/modules.d/20-eeprom-93cx6
+/lib/modules/4.4.7/eeprom_93cx6.ko

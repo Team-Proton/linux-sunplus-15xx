@@ -1,0 +1,10 @@
+Package: kmod-nf-nat
+Version: 4.4.7-1
+Depends: kernel (=4.4.7-1-ca833cdf0914f363148cef52fd4264cc), kmod-nf-conntrack, kmod-nf-ipt
+Source: package/kernel/linux
+License: GPLv2
+Section: kernel
+Status: unknown hold not-installed
+Architecture: ramips_24kec
+Installed-Size: 10598
+Description:  Netfilter NAT

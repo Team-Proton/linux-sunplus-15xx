@@ -1,0 +1,3 @@
+/lib/network/switch.sh
+/lib/libsw.so
+/sbin/swconfig

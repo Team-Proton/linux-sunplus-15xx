@@ -1,0 +1,9 @@
+Package: kmod-mac80211
+Version: 4.4.7+2016-01-10-1
+Depends: kernel (=4.4.7-1-ca833cdf0914f363148cef52fd4264cc), kmod-cfg80211, hostapd-common
+Source: package/kernel/mac80211
+Section: kernel
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: ramips_24kec
+Installed-Size: 224789
+Description:  Generic IEEE 802.11 Networking Stack (mac80211)

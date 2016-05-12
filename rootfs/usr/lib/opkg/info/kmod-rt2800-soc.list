@@ -1,0 +1,3 @@
+/lib/modules/4.4.7/rt2800soc.ko
+/lib/modules/4.4.7/rt2x00soc.ko
+/etc/modules.d/rt2800-soc

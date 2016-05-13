@@ -56,12 +56,13 @@ struct m25p {
 	struct spi_nor		spi_nor;
 	struct mutex		lock;
 
-	u_char		command[MAX_CMD_SIZE];
+	u_char		buf[4096];
 	u_char 		oneBit;
 	u_int		readCmd;
 	u_int64		flash_info;
 };
 
+__maybe_unused
 static void SPI_Reg_Write(u_char reg, u_char val)
 {
 	u_int cmd = (reg << 8) | val;
@@ -295,6 +296,57 @@ static void SPI_DATA64_WRITE( unsigned int addr, unsigned int *data, unsigned in
     RF_SPI_CUST_CMD2 = 0x0;	// reset
 }
 
+#if 0
+static void SPI_WRITE_DWORD(unsigned int addr, unsigned int data)
+{
+    SPI_CMD_WREN();
+    SPI_API_4B_ADDR_ON();
+
+    RF_SPI_ADDR_LOW = addr & 0xFFFF;
+    RF_SPI_ADDR_HIGH = (addr>>16) & 0xFFFF;
+    RF_SPI_DATA_LOW = data & 0xFFFF;
+    RF_SPI_DATA_HIGH = (data>>16) & 0xFFFF;
+    RF_SPI_CUST_CMD = 0x02B3;
+    while(RF_SPI_CUST_CMD & 0x80);
+    while((SPI_CMD_RDSR() & 0x01));
+}
+
+static void SPI_WRITE_BYTE(unsigned int addr, unsigned int data)
+{
+    SPI_CMD_WREN();
+    SPI_API_4B_ADDR_ON();
+
+    RF_SPI_ADDR_LOW = addr & 0xFFFF;
+    RF_SPI_ADDR_HIGH = (addr>>16) & 0xFFFF;
+    RF_SPI_DATA_LOW =  data & 0xFF;
+    RF_SPI_DATA_HIGH = 0;
+    RF_SPI_CUST_CMD = 0x02B3;
+    while(RF_SPI_CUST_CMD & 0x80);
+    while((SPI_CMD_RDSR() & 0x01));
+}
+
+static int SPI_Write(struct m25p *flash, u_int addr, u_char *buf, u_int len)
+{
+	u_int cnt = len;
+
+    while(cnt > 0)
+    {
+    	if (cnt > 3) { // 4 bytes write
+    		SPI_WRITE_DWORD(addr, *(u_int*)buf);
+
+            addr += 4;
+            buf += 4;
+            cnt -= 4;
+    	}
+    	else {
+    		SPI_WRITE_BYTE(addr++, *buf++);
+    		cnt--;
+     	}
+    }
+    return len;
+}
+#endif
+
 u_int MAX_SPI_page_write_cnt = 64;
 
 static u_int SPI_doWrite(struct m25p *flash, u_int addr, const u_char *buf, u_int len)
@@ -349,7 +401,9 @@ static u_int SPI_doWrite(struct m25p *flash, u_int addr, const u_char *buf, u_in
 static u_int SPI_ReadWrite(struct m25p *flash, u_int rw, u_int speed,
 		u_int addr, u_char *rBuf, const u_char *pBuf, u_int len)
 {
-	u_int ret = 0;
+	int ret = 0;
+	int size = sizeof(flash->buf);
+	u_int offset = addr & 0x1FFF000;
 
 	mutex_lock(&flash->lock);
 
@@ -358,7 +412,16 @@ static u_int SPI_ReadWrite(struct m25p *flash, u_int rw, u_int speed,
     if (rw == OP_READ)
     	ret = SPI_doRead(flash, addr, rBuf, len);
     else
-    	ret = SPI_doWrite(flash, addr, pBuf, len);
+    {
+    	if (len <= size && size == 4096) {
+    		SPI_doRead(flash, offset, flash->buf, size);
+    		SPI_doErase(flash, SPI_CMD_BE, offset);
+    		memcpy(&flash->buf[addr-offset], pBuf, len);
+    		ret = SPI_doWrite(flash, offset, flash->buf, size);
+    		if (ret == size)
+    			ret = len;
+    	}
+    }
 
 	mutex_unlock(&flash->lock);
 
@@ -435,7 +498,8 @@ static int m25pxx_read_reg(struct spi_nor *nor, u_char opcode, u_char *buf, int 
 	switch (opcode)
 	{
 	case SPINOR_OP_RDSR:
-		buf[0] = SPI_CMD_RDSR();
+		buf[0] = 0;//SPI_CMD_RDSR();
+		//printk("m25pxx spi0.0: status: %02x\n", buf[0]);
 		break;
 
 	default:
@@ -463,7 +527,7 @@ static int m25pxx_write_reg(struct spi_nor *nor, u_char opcode, u_char *buf, int
 	switch(opcode)
 	{
 	case SPINOR_OP_WREN:
-		SPI_CMD_WREN();
+		//SPI_CMD_WREN();
 		break;
 
 	case SPINOR_OP_CHIP_ERASE:
@@ -475,10 +539,13 @@ static int m25pxx_write_reg(struct spi_nor *nor, u_char opcode, u_char *buf, int
 		break;
 
 	default:
+		ret = -1;// not supported
+#if 0
 		if (len && buf)
 			SPI_Reg_Write(opcode, buf[0]);
 		else
 			SPI_Reg_Write(opcode, 0xA0);
+#endif
 		break;
 	}
 
@@ -504,7 +571,7 @@ static void m25pxx_write(struct spi_nor *nor, loff_t to, size_t len,
 	printk("---> program() opcode: 0x%02X, addr: 0x%08X, len: 0x%X\n",
 			nor->program_opcode, (u_int)to, (u_int)len);
 */
-	*retlen = SPI_ReadWrite(flash, OP_WRITE, speed, (u_int)to, rBuf, buf, (u_int)len);
+	*retlen += SPI_ReadWrite(flash, OP_WRITE, speed, (u_int)to, rBuf, buf, (u_int)len);
 }
 
 #if 0
